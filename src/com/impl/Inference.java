@@ -33,6 +33,9 @@ public class Inference {
 		METHOD = args[0];
 		NO_OF_SAMPLES = Integer.parseInt(args[1]);
 
+		System.out.println("Method value: " + METHOD);
+		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
+		
 		Inference inference = new Inference();
 
 		// Create the Alarm network as given in book.
@@ -55,22 +58,26 @@ public class Inference {
 		int numQueries = -1;
 		String[] lineArray;
 
+		System.out.print("\nPlease enter the values for \"N M\": ");
 		while (sc.hasNext()) {
 			if (isFirstInput) {
 				lineArray = sc.nextLine().split(" ");
 				numEvidences = Integer.parseInt(lineArray[0]);
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
+				
 			} else if (numEvidences > 0) {
 				lineArray = sc.nextLine().split(" ");
 				evidenceMap.put(alarmNet.getNodeByName(lineArray[0]), lineArray[1]);
 				numEvidences--;
+				
 			} else if (numQueries > 0) {
 				queryList.add(alarmNet.getNodeByName(sc.nextLine().trim()));
 				numQueries--;
 			}
 
 			if (numQueries == 0 && numEvidences == 0) {
+				System.out.println("Doing inference");
 				break;
 			}
 		}
@@ -84,6 +91,7 @@ public class Inference {
 	private void createAlarmNetwork() {
 		alarmNet = new BayesNet();
 
+		System.out.println("Creating nodes");
 		Node a = new Node("A");
 		Node b = new Node("B");
 		Node e = new Node("E");
@@ -100,10 +108,13 @@ public class Inference {
 		j.addParent(a);
 		m.addParent(a);
 
+		System.out.println("Creating Bayes net");
 		alarmNet.addNode(a);
 		alarmNet.addNode(b);
 		alarmNet.addNode(e);
 		alarmNet.addNode(j);
 		alarmNet.addNode(m);
+		
+		alarmNet.showBayesNet();
 	}
 }
