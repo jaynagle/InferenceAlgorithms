@@ -33,9 +33,17 @@ public class BayesNet {
 
 	public Node getNodeByName(String name) {
 		for (Node node : nodes) {
-			if (name.equalsIgnoreCase(node.getName()))
+			if (name.equalsIgnoreCase(node.getNodeName()))
 				return node;
 		}
+		System.out.println("ERROR: Node " + name + " not found.");
 		return null;
+	}
+	
+	public void showBayesNet() {
+		System.out.println("\nCurrent Bayes Net: \n");
+		for(Node thisNode : nodes) {
+			thisNode.showNode();
+		}
 	}
 }
