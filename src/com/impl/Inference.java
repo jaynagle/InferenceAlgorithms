@@ -23,7 +23,7 @@ public class Inference {
 	private BayesNet alarmNet;
 
 	private Map<Node, String> evidenceMap;
-	private List<Node> queryList;
+	private Map<Node, String> queryList;
 
 	/**
 	 * @param args
@@ -51,7 +51,7 @@ public class Inference {
 		Scanner sc = new Scanner(System.in);
 
 		evidenceMap = new HashMap<>();
-		queryList = new ArrayList<>();
+		queryList = new HashMap<>();
 
 		boolean isFirstInput = true;
 		int numEvidences = -1;
@@ -60,11 +60,16 @@ public class Inference {
 
 		System.out.print("\nPlease enter the values for \"N M\": ");
 		while (sc.hasNext()) {
+			
 			if (isFirstInput) {
 				lineArray = sc.nextLine().split(" ");
 				numEvidences = Integer.parseInt(lineArray[0]);
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
+				
+				// Setting evidence to 0 for enumeration method
+				if(METHOD.equalsIgnoreCase("e"))
+					numEvidences = 0;
 				
 			} else if (numEvidences > 0) {
 				lineArray = sc.nextLine().split(" ");
@@ -72,7 +77,8 @@ public class Inference {
 				numEvidences--;
 				
 			} else if (numQueries > 0) {
-				queryList.add(alarmNet.getNodeByName(sc.nextLine().trim()));
+				lineArray = sc.nextLine().split(" ");
+				queryList.put(alarmNet.getNodeByName(lineArray[0]), lineArray[1]);
 				numQueries--;
 			}
 
