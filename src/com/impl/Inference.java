@@ -3,9 +3,7 @@
  */
 package com.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -57,12 +55,16 @@ public class Inference {
 		int numEvidences = -1;
 		int numQueries = -1;
 		String[] lineArray;
+		Node foundNode = null;
 
 		System.out.print("\nPlease enter the values for \"N M\": ");
 		while (sc.hasNext()) {
+			lineArray = sc.nextLine().split("\\s");
 			
-			if (isFirstInput) {
-				lineArray = sc.nextLine().split(" ");
+			if(lineArray.length < 2){
+				System.out.println("Entry should be separated by a space.");
+				
+			} else if (isFirstInput) {
 				numEvidences = Integer.parseInt(lineArray[0]);
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
@@ -71,15 +73,23 @@ public class Inference {
 				if(METHOD.equalsIgnoreCase("e"))
 					numEvidences = 0;
 				
+			} else if(!(lineArray[1].equalsIgnoreCase("t") 
+					|| lineArray[1].equalsIgnoreCase("f"))) {
+				System.out.println("Entry should be \"node t/f\"");
+				
 			} else if (numEvidences > 0) {
-				lineArray = sc.nextLine().split(" ");
-				evidenceMap.put(alarmNet.getNodeByName(lineArray[0]), lineArray[1]);
-				numEvidences--;
+				foundNode = alarmNet.getNodeByName(lineArray[0]);
+				if (foundNode != null) {
+					evidenceMap.put(foundNode, lineArray[1]);
+					numEvidences--;	
+				}
 				
 			} else if (numQueries > 0) {
-				lineArray = sc.nextLine().split(" ");
-				queryList.put(alarmNet.getNodeByName(lineArray[0]), lineArray[1]);
-				numQueries--;
+				foundNode = alarmNet.getNodeByName(lineArray[0]);
+				if (foundNode != null) {
+					queryList.put(foundNode, lineArray[1]);
+					numQueries--;
+				}
 			}
 
 			if (numQueries == 0 && numEvidences == 0) {
