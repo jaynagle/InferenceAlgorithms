@@ -12,11 +12,13 @@ public class Node {
 	private String nodeName;
 	private List<Node> parents;
 	private List<Node> children;
+	private List<NodeProbability> nodeProbabilities;
 
 	public Node(String nodeName) {
 		this.setNodeName(nodeName);
 		parents = new ArrayList<>();
 		children = new ArrayList<>();
+		nodeProbabilities = new ArrayList<>();
 	}
 
 	public void addParent(Node node) {
@@ -29,6 +31,7 @@ public class Node {
 			this.children.add(node);
 	}
 
+	// showNode is a function used to display components of the current node.
 	public void showNode() {
 		StringBuilder parentString = new StringBuilder();
 		StringBuilder childString = new StringBuilder();
@@ -43,7 +46,21 @@ public class Node {
 				"\t\tParents: " + parentString.toString() + 
 				"\tChildren: " + childString.toString());
 	}
-
+	
+	public void addNodeProbability(Node nodeObj, String characterValue, 
+			float probability) {
+		this.nodeProbabilities
+			.add(new NodeProbability(nodeObj, characterValue, probability));
+	}
+	
+	public void showNodeProbabilities() {
+		System.out.println("Node: " + nodeName);
+		
+		for(NodeProbability nodeProbability : nodeProbabilities) {
+			System.out.println(nodeProbability.toString());
+		}
+	}
+	
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -67,4 +84,13 @@ public class Node {
 	public void setChildren(List<Node> children) {
 		this.children = children;
 	}
+
+	public List<NodeProbability> getNodeProbabilities() {
+		return nodeProbabilities;
+	}
+
+	public void setNodeProbabilities(List<NodeProbability> nodeProbabilities) {
+		this.nodeProbabilities = nodeProbabilities;
+	}
+
 }

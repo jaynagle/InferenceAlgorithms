@@ -37,6 +37,11 @@ public class NodeProbability {
 		this.setProbability(probability);
 	}
 	
+	@Override
+	public String toString() {
+		return "[" + entry + ", probability=" + probability + "]";
+	}
+	
 	public SimpleEntry<Node, Character> getEntry() {
 		return entry;
 	}
