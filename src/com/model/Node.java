@@ -48,14 +48,12 @@ public class Node {
 				"\tChildren: " + childString.toString());
 	}
 	
-	public void addNodeProbability(HashMap<Node, Character> parentEntry, 
+	public void addNodeProbability(HashMap<Node, String> parentEntry, 
 			float probability) {
 		this.nodeProbabilities.add(new NodeProbability(parentEntry, probability));
 	}
 	
 	public void showNodeProbabilities() {
-		System.out.println("Node: " + nodeName);
-		
 		for(NodeProbability nodeProbability : nodeProbabilities) {
 			System.out.println(nodeProbability.toString());
 		}

@@ -107,6 +107,10 @@ public class Inference {
 	private void createAlarmNetwork() {
 		alarmNet = new BayesNet();
 
+		HashMap<Node, String> entry;
+		entry = new HashMap<>();
+
+
 		System.out.println("Creating nodes");
 		Node a = new Node("A");
 		Node b = new Node("B");
@@ -114,16 +118,61 @@ public class Inference {
 		Node j = new Node("J");
 		Node m = new Node("M");
 
+		// Populating node A
 		a.addParent(b);
 		a.addParent(e);
 		a.addChild(j);
 		a.addChild(m);
-
+		
+		entry.put(b, "t");
+		entry.put(e, "t");
+		a.addNodeProbability(entry, 0.95f);
+		entry = new HashMap<>();
+		
+		entry.put(b, "t");
+		entry.put(e, "f");
+		a.addNodeProbability(entry, 0.94f);
+		entry = new HashMap<>();
+		
+		entry.put(b, "f");
+		entry.put(e, "t");
+		a.addNodeProbability(entry, 0.29f);
+		entry = new HashMap<>();
+		
+		entry.put(b, "f");
+		entry.put(e, "f");
+		a.addNodeProbability(entry, 0.001f);
+		entry = new HashMap<>();
+		
+		// Populating node B		
 		b.addChild(a);
+		b.addNodeProbability(null, 0.001f);
+		
+		// Populating node E
 		e.addChild(a);
+		e.addNodeProbability(null, 0.002f);
+		
+		// Populating node J
 		j.addParent(a);
+		
+		entry.put(a, "t");
+		j.addNodeProbability(entry, 0.90f);
+		entry = new HashMap<>();
+		
+		entry.put(a, "f");
+		j.addNodeProbability(entry, 0.05f);
+		entry = new HashMap<>();
+		
+		// Populating node M
 		m.addParent(a);
-
+		
+		entry.put(a, "t");
+		m.addNodeProbability(entry, 0.70f);
+		entry = new HashMap<>();
+		
+		entry.put(a, "f");
+		m.addNodeProbability(entry, 0.01f);
+		
 		System.out.println("Creating Bayes net");
 		alarmNet.addNode(a);
 		alarmNet.addNode(b);

@@ -44,6 +44,7 @@ public class BayesNet {
 		System.out.println("\nCurrent Bayes Net: \n");
 		for(Node thisNode : nodes) {
 			thisNode.showNode();
+			thisNode.showNodeProbabilities();
 		}
 	}
 }

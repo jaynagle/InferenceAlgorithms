@@ -5,6 +5,7 @@ package com.model;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 /**
  * @author Ankit Sadana, Jay Nagle
@@ -13,7 +14,7 @@ import java.util.Iterator;
 public class NodeProbability {
 
 	// To store values like <Node A, T> 
-	private HashMap<Node, Character> parentEntry;
+	private HashMap<Node, String> parentEntry;
 	// To store the corresponding probability
 	private float probability;
 	
@@ -31,7 +32,7 @@ public class NodeProbability {
 	 * @param parentEntry
 	 * @param probability
 	 */
-	public NodeProbability(HashMap<Node, Character> parentEntry, 
+	public NodeProbability(HashMap<Node, String> parentEntry, 
 			float probability) {
 		this.setParentEntry(parentEntry);
 		this.setProbability(probability);
@@ -40,22 +41,23 @@ public class NodeProbability {
 	@Override
 	public String toString() {
 		StringBuilder parentEntryString = new StringBuilder();
-		
-		Iterator iteratorObj = parentEntry.entrySet().iterator();
-	    while (iteratorObj.hasNext()) {
-	        HashMap.Entry pair = (HashMap.Entry)iteratorObj.next();
-	        Node nodeObj = (Node) pair.getKey();
-	        parentEntryString.append(nodeObj.getNodeName() + "=" + pair.getValue() + "\t");
-	    }
-	        
-		return "[" + parentEntryString.toString() + ", probability=" + probability + "]";
+		if (parentEntry != null) {
+			Iterator iteratorObj = parentEntry.entrySet().iterator();
+		    while (iteratorObj.hasNext()) {
+		        Entry<Node, String> pair = (Entry<Node, String>) iteratorObj.next();
+		        parentEntryString.append(pair.getKey().getNodeName() + "=" + pair.getValue() + "\t");
+		    }	
+		} else {
+			parentEntryString.append("null\t");
+		}
+		return "[" + parentEntryString.toString() + "Pr=" + probability + "]";
 	}
 	
-	public HashMap<Node, Character> getParentEntry() {
+	public HashMap<Node, String> getParentEntry() {
 		return parentEntry;
 	}
 
-	public void setParentEntry(HashMap<Node, Character> entry) {
+	public void setParentEntry(HashMap<Node, String> entry) {
 		this.parentEntry = entry;
 	}
 	
