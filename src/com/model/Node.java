@@ -1,6 +1,7 @@
 package com.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,10 +48,9 @@ public class Node {
 				"\tChildren: " + childString.toString());
 	}
 	
-	public void addNodeProbability(Node nodeObj, String characterValue, 
+	public void addNodeProbability(HashMap<Node, Character> parentEntry, 
 			float probability) {
-		this.nodeProbabilities
-			.add(new NodeProbability(nodeObj, characterValue, probability));
+		this.nodeProbabilities.add(new NodeProbability(parentEntry, probability));
 	}
 	
 	public void showNodeProbabilities() {

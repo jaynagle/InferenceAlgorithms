@@ -3,7 +3,8 @@
  */
 package com.model;
 
-import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author Ankit Sadana, Jay Nagle
@@ -12,42 +13,50 @@ import java.util.AbstractMap.SimpleEntry;
 public class NodeProbability {
 
 	// To store values like <Node A, T> 
-	private SimpleEntry<Node, Character> entry;
+	private HashMap<Node, Character> parentEntry;
 	// To store the corresponding probability
 	private float probability;
+	
 	/**
 	 * 
 	 */
 	public NodeProbability() {
-		this.setEntry(null);
+		this.setParentEntry(new HashMap<>());
 		this.setProbability(0);
 	}
 	
 	/**
 	 * Parameterized constructor for NodeProbability
 	 * 
-	 * @param entry
+	 * @param parentEntry
 	 * @param probability
 	 */
-	public NodeProbability(Node nodeObj, String characterValue, 
+	public NodeProbability(HashMap<Node, Character> parentEntry, 
 			float probability) {
-		SimpleEntry<Node, Character> simpleEntryObj = 
-				new SimpleEntry<Node, Character>(nodeObj, characterValue.charAt(0));
-		this.setEntry(simpleEntryObj);
+		this.setParentEntry(parentEntry);
 		this.setProbability(probability);
 	}
 	
 	@Override
 	public String toString() {
-		return "[" + entry + ", probability=" + probability + "]";
+		StringBuilder parentEntryString = new StringBuilder();
+		
+		Iterator iteratorObj = parentEntry.entrySet().iterator();
+	    while (iteratorObj.hasNext()) {
+	        HashMap.Entry pair = (HashMap.Entry)iteratorObj.next();
+	        Node nodeObj = (Node) pair.getKey();
+	        parentEntryString.append(nodeObj.getNodeName() + "=" + pair.getValue() + "\t");
+	    }
+	        
+		return "[" + parentEntryString.toString() + ", probability=" + probability + "]";
 	}
 	
-	public SimpleEntry<Node, Character> getEntry() {
-		return entry;
+	public HashMap<Node, Character> getParentEntry() {
+		return parentEntry;
 	}
 
-	public void setEntry(SimpleEntry<Node, Character> entry) {
-		this.entry = entry;
+	public void setParentEntry(HashMap<Node, Character> entry) {
+		this.parentEntry = entry;
 	}
 	
 	public float getProbability() {
