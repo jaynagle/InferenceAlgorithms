@@ -3,7 +3,7 @@
  */
 package com.model;
 
-import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 /**
  * @author Ankit Sadana, Jay Nagle
@@ -11,7 +11,9 @@ import java.util.Map.Entry;
  */
 public class NodeProbability {
 
-	private Entry<Node, Character> entry;
+	// To store values like <Node A, T> 
+	private SimpleEntry<Node, Character> entry;
+	// To store the corresponding probability
 	private float probability;
 	/**
 	 * 
@@ -27,16 +29,19 @@ public class NodeProbability {
 	 * @param entry
 	 * @param probability
 	 */
-	public NodeProbability(Entry<Node, Character> entry, float probability) {
-		this.setEntry(entry);
+	public NodeProbability(Node nodeObj, String characterValue, 
+			float probability) {
+		SimpleEntry<Node, Character> simpleEntryObj = 
+				new SimpleEntry<Node, Character>(nodeObj, characterValue.charAt(0));
+		this.setEntry(simpleEntryObj);
 		this.setProbability(probability);
 	}
 	
-	public Entry<Node, Character> getEntry() {
+	public SimpleEntry<Node, Character> getEntry() {
 		return entry;
 	}
 
-	public void setEntry(Entry<Node, Character> entry) {
+	public void setEntry(SimpleEntry<Node, Character> entry) {
 		this.entry = entry;
 	}
 	
