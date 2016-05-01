@@ -59,6 +59,16 @@ public class Node {
 		}
 	}
 	
+	public float getProbability(NodeProbability nodeProbabilityObj) {
+		for(NodeProbability nodeProbability : nodeProbabilities) {
+			if(nodeProbabilityObj.getParentEntry().entrySet().equals(
+					nodeProbability.getParentEntry().entrySet())) {
+				return nodeProbability.getProbability();
+			}
+		}
+		return 0;
+	}
+	
 	public String getNodeName() {
 		return nodeName;
 	}
