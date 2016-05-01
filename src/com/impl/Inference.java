@@ -3,7 +3,9 @@
  */
 package com.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -21,7 +23,7 @@ public class Inference {
 	private BayesNet alarmNet;
 
 	private Map<Node, String> evidenceMap;
-	private Map<Node, String> queryList;
+	private List<Node> queryList;
 
 	/**
 	 * @param args
@@ -49,7 +51,7 @@ public class Inference {
 		Scanner sc = new Scanner(System.in);
 
 		evidenceMap = new HashMap<>();
-		queryList = new HashMap<>();
+		queryList = new ArrayList<>();
 
 		boolean isFirstInput = true;
 		int numEvidences = -1;
@@ -61,10 +63,7 @@ public class Inference {
 		while (sc.hasNext()) {
 			lineArray = sc.nextLine().split("\\s");
 			
-			if(lineArray.length < 2){
-				System.out.println("Entry should be separated by a space.");
-				
-			} else if (isFirstInput) {
+			if (isFirstInput) {
 				numEvidences = Integer.parseInt(lineArray[0]);
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
@@ -87,7 +86,7 @@ public class Inference {
 			} else if (numQueries > 0) {
 				foundNode = alarmNet.getNodeByName(lineArray[0]);
 				if (foundNode != null) {
-					queryList.put(foundNode, lineArray[1]);
+					queryList.add(foundNode);
 					numQueries--;
 				}
 			}
