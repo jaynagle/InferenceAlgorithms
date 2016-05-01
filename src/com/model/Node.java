@@ -61,7 +61,7 @@ public class Node {
 	
 	public float getProbability(NodeProbability nodeProbabilityObj) {
 		for(NodeProbability nodeProbability : nodeProbabilities) {
-		if (nodeProbability.getParentEntry().isEmpty()) {
+		if (nodeProbability.getParentEntry() == null) {
 			return nodeProbability.getProbability();
 		} else if(nodeProbabilityObj.getParentEntry().entrySet().equals(
 					nodeProbability.getParentEntry().entrySet())) {

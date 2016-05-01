@@ -145,11 +145,13 @@ public class Inference {
 		
 		// Populating node B		
 		b.addChild(a);
-		b.addNodeProbability(null, 0.001f);
+//		b.addNodeProbability(null, 0.001f);
+		b.addNodeProbability(null, 0.45f);
 		
 		// Populating node E
 		e.addChild(a);
-		e.addNodeProbability(null, 0.002f);
+//		e.addNodeProbability(null, 0.002f);
+		e.addNodeProbability(null, 0.60f);
 		
 		// Populating node J
 		j.addParent(a);
@@ -180,5 +182,6 @@ public class Inference {
 		alarmNet.addNode(m);
 		
 		alarmNet.showBayesNet();
+		new Sampler().generateSample(alarmNet);
 	}
 }

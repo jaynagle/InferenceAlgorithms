@@ -22,8 +22,8 @@ public class NodeProbability {
 	 * 
 	 */
 	public NodeProbability() {
-		this.setParentEntry(new HashMap<>());
-		this.setProbability(0);
+		parentEntry = new HashMap<>();
+		probability = 0;
 	}
 	
 	/**
