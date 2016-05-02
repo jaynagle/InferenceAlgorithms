@@ -1,14 +1,19 @@
 package com.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.model.BayesNet;
 import com.model.NodeProbability;
 
+/**
+ * @author Ankit Sadana, Jay Nagle
+ *
+ */
 public class Sampler {
 
-	public int[][] generateSample(BayesNet bayesNet) {
-		int[][] sampleArray = new int[10][5];
+	private int[][] generateSample(BayesNet bayesNet, int[][] sampleArray) {
 
 		Random a_random = new Random();
 		Random b_random = new Random();
@@ -80,17 +85,31 @@ public class Sampler {
 			}
 
 			sampleArray[i] = new int[] { b_sample, e_sample, a_sample, j_sample, m_sample };
-			System.out.println("");
 		}
 
-		for (int[] ks : sampleArray) {
-			for (int k : ks) {
-				System.out.print(k + ",");
-			}
-			System.out.println("");
-		}
+		/*
+		 * System.out.println("b,e,a,j,m"); for (int[] ks : sampleArray) { for
+		 * (int k : ks) { System.out.print(k + ","); } System.out.println(""); }
+		 */
 
 		return sampleArray;
+	}
+
+	/**
+	 * This method creates a list of different sample sizes as specified in the
+	 * question.
+	 * 
+	 * @param bayesNet
+	 * @return
+	 */
+	public List<int[][]> getSamples(BayesNet bayesNet) {
+		int[] sampleSizeArray = { 10, 50, 100, 200, 500, 1000, 10000 };
+		List<int[][]> sampleList = new ArrayList<>();
+
+		for (int i : sampleSizeArray) {
+			sampleList.add(generateSample(bayesNet, new int[i][5]));
+		}
+		return sampleList;
 	}
 
 }

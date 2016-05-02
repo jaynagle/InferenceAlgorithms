@@ -6,21 +6,25 @@ package com.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.model.BayesNet;
 import com.model.Node;
 
 /**
- * @author hp
+ * @author Ankit Sadana, Jay Nagle
  *
  */
 public abstract class InferenceUtil {
+	protected BayesNet alarmNet;
 	protected Map<Node, String> evidenceMap;
 	protected List<Node> queryList;
-	protected int[][] sampleArray;
+	protected List<int[][]> sampleList;
 
-	public InferenceUtil(Map<Node, String> evidenceMap, List<Node> queryList, int[][] sampleArray) {
+	public InferenceUtil(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList,
+			List<int[][]> sampleList) {
+		this.alarmNet = alarmNet;
 		this.evidenceMap = evidenceMap;
 		this.queryList = queryList;
-		this.sampleArray = sampleArray;
+		this.sampleList = sampleList;
 	}
 
 	public abstract void infer();

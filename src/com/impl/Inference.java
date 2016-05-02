@@ -35,7 +35,7 @@ public class Inference {
 
 		System.out.println("Method value: " + METHOD);
 		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
-		
+
 		Inference inference = new Inference();
 
 		// Create the Alarm network as given in book.
@@ -45,6 +45,7 @@ public class Inference {
 		inference.populateEvidences();
 
 		// Do Actual inference now...
+		inference.callInferenceAlgorithms();
 	}
 
 	public void populateEvidences() {
@@ -62,27 +63,26 @@ public class Inference {
 		System.out.print("\nPlease enter the values for \"N M\": ");
 		while (sc.hasNext()) {
 			lineArray = sc.nextLine().split("\\s");
-			
+
 			if (isFirstInput) {
 				numEvidences = Integer.parseInt(lineArray[0]);
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
-				
+
 				// Setting evidence to 0 for enumeration method
-				if(METHOD.equalsIgnoreCase("e"))
+				if (METHOD.equalsIgnoreCase("e"))
 					numEvidences = 0;
-				
-			} else if(!(lineArray[1].equalsIgnoreCase("t") 
-					|| lineArray[1].equalsIgnoreCase("f"))) {
-				System.out.println("Entry should be \"node t/f\"");
-				
+
 			} else if (numEvidences > 0) {
+				if (!(lineArray[1].equalsIgnoreCase("t") || lineArray[1].equalsIgnoreCase("f"))) {
+					System.out.println("Entry should be \"node t/f\"");
+				}
 				foundNode = alarmNet.getNodeByName(lineArray[0]);
 				if (foundNode != null) {
 					evidenceMap.put(foundNode, lineArray[1]);
-					numEvidences--;	
+					numEvidences--;
 				}
-				
+
 			} else if (numQueries > 0) {
 				foundNode = alarmNet.getNodeByName(lineArray[0]);
 				if (foundNode != null) {
@@ -109,7 +109,6 @@ public class Inference {
 		HashMap<Node, String> entry;
 		entry = new HashMap<>();
 
-
 		System.out.println("Creating nodes");
 		Node a = new Node("A");
 		Node b = new Node("B");
@@ -122,66 +121,71 @@ public class Inference {
 		a.addParent(e);
 		a.addChild(j);
 		a.addChild(m);
-		
+
 		entry.put(b, "t");
 		entry.put(e, "t");
 		a.addNodeProbability(entry, 0.95f);
 		entry = new HashMap<>();
-		
+
 		entry.put(b, "t");
 		entry.put(e, "f");
 		a.addNodeProbability(entry, 0.94f);
 		entry = new HashMap<>();
-		
+
 		entry.put(b, "f");
 		entry.put(e, "t");
 		a.addNodeProbability(entry, 0.29f);
 		entry = new HashMap<>();
-		
+
 		entry.put(b, "f");
 		entry.put(e, "f");
 		a.addNodeProbability(entry, 0.001f);
 		entry = new HashMap<>();
-		
-		// Populating node B		
+
+		// Populating node B
 		b.addChild(a);
-//		b.addNodeProbability(null, 0.001f);
-		b.addNodeProbability(null, 0.45f);
-		
+		b.addNodeProbability(null, 0.001f);
+		//b.addNodeProbability(null, 0.45f);
+
 		// Populating node E
 		e.addChild(a);
-//		e.addNodeProbability(null, 0.002f);
-		e.addNodeProbability(null, 0.60f);
-		
+		e.addNodeProbability(null, 0.002f);
+		//e.addNodeProbability(null, 0.60f);
+
 		// Populating node J
 		j.addParent(a);
-		
+
 		entry.put(a, "t");
 		j.addNodeProbability(entry, 0.90f);
 		entry = new HashMap<>();
-		
+
 		entry.put(a, "f");
 		j.addNodeProbability(entry, 0.05f);
 		entry = new HashMap<>();
-		
+
 		// Populating node M
 		m.addParent(a);
-		
+
 		entry.put(a, "t");
 		m.addNodeProbability(entry, 0.70f);
 		entry = new HashMap<>();
-		
+
 		entry.put(a, "f");
 		m.addNodeProbability(entry, 0.01f);
-		
+
 		System.out.println("Creating Bayes net");
 		alarmNet.addNode(a);
 		alarmNet.addNode(b);
 		alarmNet.addNode(e);
 		alarmNet.addNode(j);
 		alarmNet.addNode(m);
-		
+
 		alarmNet.showBayesNet();
-		new Sampler().generateSample(alarmNet);
+	}
+
+	private void callInferenceAlgorithms() {
+		List<int[][]> sampleList = new Sampler().getSamples(alarmNet);
+		PriorSampling priorSampling = new PriorSampling(alarmNet, evidenceMap, queryList, sampleList);
+		priorSampling.infer();
 	}
 }

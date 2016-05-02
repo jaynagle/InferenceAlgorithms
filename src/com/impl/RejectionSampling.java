@@ -6,6 +6,7 @@ package com.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.model.BayesNet;
 import com.model.Node;
 
 /**
@@ -14,8 +15,9 @@ import com.model.Node;
  */
 public class RejectionSampling extends InferenceUtil {
 
-	public RejectionSampling(Map<Node, String> evidenceMap, List<Node> queryList, int[][] sampleArray) {
-		super(evidenceMap, queryList, sampleArray);
+	public RejectionSampling(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList,
+			List<int[][]> sampleList) {
+		super(alarmNet, evidenceMap, queryList, sampleList);
 	}
 
 	@Override

@@ -4,7 +4,7 @@
 package com.impl;
 
 /**
- * @author hp
+ * @author Ankit Sadana, Jay Nagle
  *
  */
 public class EnumerationInference {
