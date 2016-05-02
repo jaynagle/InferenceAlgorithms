@@ -184,8 +184,24 @@ public class Inference {
 	}
 
 	private void callInferenceAlgorithms() {
+		
 		List<int[][]> sampleList = new Sampler().getSamples(alarmNet);
-		PriorSampling priorSampling = new PriorSampling(alarmNet, evidenceMap, queryList, sampleList);
-		priorSampling.infer();
+		//int[][] sampleList = new Sampler().getSamples(alarmNet, NO_OF_SAMPLES);
+		
+		switch (METHOD) {
+		case "p":
+			PriorSampling priorSampling = new PriorSampling(alarmNet, evidenceMap, queryList, sampleList);
+			priorSampling.infer();
+			break;
+		case "r":
+			new RejectionSampling(alarmNet, evidenceMap, queryList, sampleList).infer();
+			break;
+		case "l":
+			break;
+		case "e":
+			break;
+		default:
+			break;
+		}
 	}
 }
