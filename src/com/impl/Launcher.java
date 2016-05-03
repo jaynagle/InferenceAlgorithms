@@ -3,7 +3,6 @@ package com.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.model.BayesNet;
@@ -37,8 +36,8 @@ public class Launcher {
 		METHOD = args[0];
 		NO_OF_SAMPLES = Integer.parseInt(args[1]);
 
-//		System.out.println("Method value: " + METHOD);
-//		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
+		// System.out.println("Method value: " + METHOD);
+		// System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
 
 		Launcher launcher = new Launcher();
 
@@ -148,8 +147,8 @@ public class Launcher {
 		int numQueries = -1;
 		String[] lineArray;
 		Node foundNode = null;
-		
-//		System.out.print("\nPlease enter the values for \"N M\": ");
+
+		// System.out.print("\nPlease enter the values for \"N M\": ");
 
 		while (sc.hasNext()) {
 			lineArray = sc.nextLine().split("\\s");
@@ -195,20 +194,19 @@ public class Launcher {
 	 */
 	private void callInferenceAlgorithms() {
 		int[][] sampleArray = new int[NO_OF_SAMPLES][5];
-		
+
 		switch (METHOD) {
 		case "p":
-			sampleArray = new Sampler()
-								.generateSamplesPrior(alarmNet, sampleArray);
+			sampleArray = new Sampler().generateSamplesPrior(alarmNet, sampleArray);
 			new PriorSampling(alarmNet, evidenceMap, queryList, sampleArray).infer();
 			break;
 		case "r":
-			sampleArray = new Sampler()
-								.generateSamplesRejection(alarmNet, evidenceMap, sampleArray);
+			sampleArray = new Sampler().generateSamplesRejection(alarmNet, evidenceMap, sampleArray);
 			new RejectionSampling(alarmNet, evidenceMap, queryList, sampleArray).infer();
 			break;
 		case "l":
-
+			new LikelihoodWeighting(alarmNet, evidenceMap, queryList, sampleArray,
+					new Sampler().generateWeightedSamples(alarmNet, evidenceMap, sampleArray)).infer();
 			break;
 		case "e":
 			new EnumerationInference(alarmNet, evidenceMap, queryList).infer();

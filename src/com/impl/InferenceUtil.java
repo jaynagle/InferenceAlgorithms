@@ -10,8 +10,8 @@ import com.model.BayesNet;
 import com.model.Node;
 
 /**
- * InferenceUtil is the base class with common variables and
- * constructor that are inherited by other sampling methods.
+ * InferenceUtil is the base class with common variables and constructor that
+ * are inherited by other sampling methods.
  * 
  * @author Ankit Sadana, Jay Nagle
  *
@@ -22,13 +22,16 @@ public abstract class InferenceUtil {
 	protected List<Node> queryList;
 	protected int[][] sampleArray;
 
-	public InferenceUtil(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList,
-			int[][] sampleArray) {
+	public InferenceUtil(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList, int[][] sampleArray) {
 		this.alarmNet = alarmNet;
 		this.evidenceMap = evidenceMap;
 		this.queryList = queryList;
 		this.sampleArray = sampleArray;
 	}
 
+	/**
+	 * Generic inference method for all the algorithms. Concrete implementation
+	 * should be in respective inference classes,
+	 */
 	public abstract void infer();
 }
