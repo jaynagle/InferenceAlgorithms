@@ -69,9 +69,9 @@ public class Inference {
 				numQueries = Integer.parseInt(lineArray[1]);
 				isFirstInput = false;
 
-				// Setting evidence to 0 for enumeration method
+				// Setting samples to 0 for enumeration inference
 				if (METHOD.equalsIgnoreCase("e"))
-					numEvidences = 0;
+					NO_OF_SAMPLES = 0;
 
 			} else if (numEvidences > 0) {
 				if (!(lineArray[1].equalsIgnoreCase("t") || lineArray[1].equalsIgnoreCase("f"))) {
@@ -199,6 +199,7 @@ public class Inference {
 		case "l":
 			break;
 		case "e":
+			new EnumerationInference(alarmNet, evidenceMap, queryList).infer();
 			break;
 		default:
 			break;
