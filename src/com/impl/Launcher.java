@@ -1,6 +1,3 @@
-/**
- * Launcher is the main class that executes all the operations.
- */
 package com.impl;
 
 import java.util.ArrayList;
@@ -13,6 +10,8 @@ import com.model.BayesNet;
 import com.model.Node;
 
 /**
+ * Launcher is the main class that executes all the operations.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */
