@@ -1,6 +1,8 @@
 package com.impl;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -117,6 +119,7 @@ public class Sampler {
 	 */
 	public int[][] generateSamplesRejection(BayesNet bayesNet, Map<Node, String> evidenceMap, int[][] sampleArray) {
 
+		List<int[]> sampleArrayList = new ArrayList<>();
 		int b_evidence = -1;
 		int e_evidence = -1;
 		int a_evidence = -1;
@@ -229,10 +232,16 @@ public class Sampler {
 			if (m_evidence != -1 && m_sample != b_evidence)
 				continue;
 
-			sampleArray[i] = new int[] { b_sample, e_sample, a_sample, j_sample, m_sample };
+			//sampleArray[i] = new int[] { b_sample, e_sample, a_sample, j_sample, m_sample };
+			sampleArrayList.add(new int[] { b_sample, e_sample, a_sample, j_sample, m_sample });
 		}
 
-		return sampleArray;
+		int[][] sampledArray = new int[sampleArrayList.size()][5];
+		for (int i = 0; i < sampledArray.length; i++) {
+			sampledArray[i] = sampleArrayList.get(i);
+		}
+		
+		return sampledArray;
 	}
 
 	public List<Object> generateWeightedSamples(BayesNet bayesNet, Map<Node, String> evidenceMap, int[][] sampleArray) {
@@ -339,5 +348,17 @@ public class Sampler {
 		result.add(totalSampleWeight);
 
 		return result;
+	}
+	
+	public static void main(String[] args) {
+		Sampler sampler = new Sampler();
+		sampler.abc("jay");
+	}
+	
+	public String abc(String name) {
+		
+		name = name + "A";
+		name = name + abc(name);
+		return name;
 	}
 }
