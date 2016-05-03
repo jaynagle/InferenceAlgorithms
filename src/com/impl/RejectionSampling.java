@@ -54,50 +54,49 @@ public class RejectionSampling extends InferenceUtil {
 				break;
 			}
 		}
+		for (Node queryNode : queryList) {
+			for (int[][] sampleArray : sampleList) {
+				int countQueryAndEvidenceSamples = 0;
+				int countEvidenceSamples = 0;
+				int sampleCount = 0;
 
-		for (int[][] sampleArray : sampleList) {
-			int countQueryAndEvidenceSamples = 0;
-			int countEvidenceSamples = 0;
-			int sampleCount = 0;
+				for (int[] sample : sampleArray) {
 
-			for (int[] sample : sampleArray) {
+					boolean isEvidenceValid = true;
+					boolean isQueryValid = true;
 
-				boolean isEvidenceValid = true;
-				boolean isQueryValid = true;
+					int b_sample = sample[0];
+					int e_sample = sample[1];
+					int a_sample = sample[2];
+					int j_sample = sample[3];
+					int m_sample = sample[4];
 
-				int b_sample = sample[0];
-				int e_sample = sample[1];
-				int a_sample = sample[2];
-				int j_sample = sample[3];
-				int m_sample = sample[4];
-
-				if (b_evidence != -1) {
-					if (!(b_evidence == b_sample)) {
-						isEvidenceValid = false;
+					if (b_evidence != -1) {
+						if (!(b_evidence == b_sample)) {
+							isEvidenceValid = false;
+						}
 					}
-				}
-				if (e_evidence != -1) {
-					if (!(e_evidence == e_sample)) {
-						isEvidenceValid = false;
+					if (e_evidence != -1) {
+						if (!(e_evidence == e_sample)) {
+							isEvidenceValid = false;
+						}
 					}
-				}
-				if (a_evidence != -1) {
-					if (!(a_evidence == a_sample)) {
-						isEvidenceValid = false;
+					if (a_evidence != -1) {
+						if (!(a_evidence == a_sample)) {
+							isEvidenceValid = false;
+						}
 					}
-				}
-				if (j_evidence != -1) {
-					if (!(j_evidence == j_sample)) {
-						isEvidenceValid = false;
+					if (j_evidence != -1) {
+						if (!(j_evidence == j_sample)) {
+							isEvidenceValid = false;
+						}
 					}
-				}
-				if (m_evidence != -1) {
-					if (!(m_evidence == m_sample)) {
-						isEvidenceValid = false;
+					if (m_evidence != -1) {
+						if (!(m_evidence == m_sample)) {
+							isEvidenceValid = false;
+						}
 					}
-				}
 
-				for (Node queryNode : queryList) {
 					switch (queryNode.getNodeName()) {
 					case "B":
 						if (b_sample != 1)
@@ -123,19 +122,22 @@ public class RejectionSampling extends InferenceUtil {
 					default:
 						break;
 					}
-				}
-				if (isEvidenceValid) {
-					if (isQueryValid) {
-						countQueryAndEvidenceSamples++;
+
+					if (isEvidenceValid) {
+						if (isQueryValid) {
+							countQueryAndEvidenceSamples++;
+						}
+						countEvidenceSamples++;
+						// Only count samples when Evidence is true
+						sampleCount++;
 					}
-					countEvidenceSamples++;
-					// Only count samples when Evidence is true
-					sampleCount++;
 				}
-				
+
+//				System.out.println("REMOVE ME: " + sampleCount + "," + countQueryAndEvidenceSamples
+//						+ "," + countEvidenceSamples);
+				System.out.println(queryNode.getNodeName() + " "
+						+ (countQueryAndEvidenceSamples * 1f / countEvidenceSamples));
 			}
-			System.out.println(sampleCount + "," + countQueryAndEvidenceSamples + "," + countEvidenceSamples + ","
-					+ (countQueryAndEvidenceSamples * 1f / countEvidenceSamples));
 		}
 	}
 }

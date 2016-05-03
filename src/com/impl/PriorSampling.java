@@ -132,11 +132,11 @@ public class PriorSampling extends InferenceUtil {
 					sampleCount++;
 				}
 
-				System.out.println(queryNode.getNodeName() + ":" + sampleCount + "," 
-						+ countQueryAndEvidenceSamples + "," + countEvidenceSamples + ","
+//				System.out.println("REMOVE ME: " + sampleCount + "," + countQueryAndEvidenceSamples
+//						+ "," + countEvidenceSamples);
+				System.out.println(queryNode.getNodeName() + " "
 						+ (countQueryAndEvidenceSamples * 1f / countEvidenceSamples));
 			}
 		}
 	}
-
 }
