@@ -16,8 +16,8 @@ import com.model.Node;
 public class LikelihoodWeighting extends InferenceUtil {
 
 	public LikelihoodWeighting(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList,
-			List<int[][]> sampleList) {
-		super(alarmNet, evidenceMap, queryList, sampleList);
+			int[][] sampleArray) {
+		super(alarmNet, evidenceMap, queryList, sampleArray);
 	}
 
 	@Override

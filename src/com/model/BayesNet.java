@@ -1,12 +1,12 @@
-/**
- * 
- */
 package com.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * BayesNet is a class that stores and uses Node variables
+ * to form a Baye's Net.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */
@@ -40,6 +40,7 @@ public class BayesNet {
 		return null;
 	}
 	
+	// for debugging
 	public void showBayesNet() {
 		System.out.println("\nCurrent Bayes Net: \n");
 		for(Node thisNode : nodes) {

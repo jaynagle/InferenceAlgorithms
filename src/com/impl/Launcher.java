@@ -21,21 +21,24 @@ public class Launcher {
 	private static int NO_OF_SAMPLES;
 	private BayesNet alarmNet;
 
-	private Map<Node, String> evidenceMap;
+	private HashMap<Node, String> evidenceMap;
 	private List<Node> queryList;
 
 	/**
 	 * Main method, expects two arguments
-	 * @param args[0] 	Method value, {e,p,r,l}
-	 * @param args[1]	Number of samples to be generated
+	 * 
+	 * @param args[0]
+	 *            Method value, {e,p,r,l}
+	 * @param args[1]
+	 *            Number of samples to be generated
 	 */
 	public static void main(String[] args) {
 
 		METHOD = args[0];
 		NO_OF_SAMPLES = Integer.parseInt(args[1]);
 
-		System.out.println("Method value: " + METHOD);
-		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
+//		System.out.println("Method value: " + METHOD);
+//		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
 
 		Launcher launcher = new Launcher();
 
@@ -59,12 +62,20 @@ public class Launcher {
 		HashMap<Node, String> entry;
 		entry = new HashMap<>();
 
-		System.out.println("Creating nodes");
+		// System.out.println("Creating nodes");
 		Node a = new Node("A");
 		Node b = new Node("B");
 		Node e = new Node("E");
 		Node j = new Node("J");
 		Node m = new Node("M");
+
+		// Populating node B
+		b.addChild(a);
+		b.addNodeProbability(null, 0.001f);
+
+		// Populating node E
+		e.addChild(a);
+		e.addNodeProbability(null, 0.002f);
 
 		// Populating node A
 		a.addParent(b);
@@ -92,14 +103,6 @@ public class Launcher {
 		a.addNodeProbability(entry, 0.001f);
 		entry = new HashMap<>();
 
-		// Populating node B
-		b.addChild(a);
-		b.addNodeProbability(null, 0.001f);
-
-		// Populating node E
-		e.addChild(a);
-		e.addNodeProbability(null, 0.002f);
-
 		// Populating node J
 		j.addParent(a);
 
@@ -121,21 +124,19 @@ public class Launcher {
 		entry.put(a, "f");
 		m.addNodeProbability(entry, 0.01f);
 
-		System.out.println("Creating Bayes net");
+		// System.out.println("Creating Bayes net");
 		alarmNet.addNode(a);
 		alarmNet.addNode(b);
 		alarmNet.addNode(e);
 		alarmNet.addNode(j);
 		alarmNet.addNode(m);
 
-		alarmNet.showBayesNet();
 	}
-	
+
 	/**
-	 * populateEvidences is a function that excepts N, M 
-	 * and then N number of evidences, along with M number of
-	 * queries. 
- 	 */
+	 * populateEvidences is a function that excepts N, M and then N number of
+	 * evidences, along with M number of queries.
+	 */
 	public void populateEvidences() {
 		Scanner sc = new Scanner(System.in);
 
@@ -147,8 +148,9 @@ public class Launcher {
 		int numQueries = -1;
 		String[] lineArray;
 		Node foundNode = null;
+		
+//		System.out.print("\nPlease enter the values for \"N M\": ");
 
-		System.out.print("\nPlease enter the values for \"N M\": ");
 		while (sc.hasNext()) {
 			lineArray = sc.nextLine().split("\\s");
 
@@ -167,7 +169,7 @@ public class Launcher {
 				}
 				foundNode = alarmNet.getNodeByName(lineArray[0]);
 				if (foundNode != null) {
-					evidenceMap.put(foundNode, lineArray[1]);
+					evidenceMap.put(foundNode, lineArray[1].toLowerCase());
 					numEvidences--;
 				}
 
@@ -180,7 +182,7 @@ public class Launcher {
 			}
 
 			if (numQueries == 0 && numEvidences == 0) {
-				System.out.println("Doing inference");
+				// System.out.println("Doing inference");
 				break;
 			}
 		}
@@ -188,24 +190,25 @@ public class Launcher {
 	}
 
 	/**
-	 * callInferenceAlgorithms is a function that calls the 
-	 * appropriate inference algorithm according to the method
-	 * passed as the argument.
+	 * callInferenceAlgorithms is a function that calls the appropriate
+	 * inference algorithm according to the method passed as the argument.
 	 */
 	private void callInferenceAlgorithms() {
-		
-		List<int[][]> sampleList = new Sampler().getSamples(alarmNet);
-		//int[][] sampleList = new Sampler().getSamples(alarmNet, NO_OF_SAMPLES);
+		int[][] sampleArray = new int[NO_OF_SAMPLES][5];
 		
 		switch (METHOD) {
 		case "p":
-			new PriorSampling(alarmNet, evidenceMap, queryList, sampleList).infer();
+			sampleArray = new Sampler()
+								.generateSamplesPrior(alarmNet, sampleArray);
+			new PriorSampling(alarmNet, evidenceMap, queryList, sampleArray).infer();
 			break;
 		case "r":
-			new RejectionSampling(alarmNet, evidenceMap, queryList, sampleList).infer();
+			sampleArray = new Sampler()
+								.generateSamplesRejection(alarmNet, evidenceMap, sampleArray);
+			new RejectionSampling(alarmNet, evidenceMap, queryList, sampleArray).infer();
 			break;
 		case "l":
-			
+
 			break;
 		case "e":
 			new EnumerationInference(alarmNet, evidenceMap, queryList).infer();

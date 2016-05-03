@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.impl;
 
 import java.util.List;
@@ -11,16 +8,21 @@ import com.model.BayesNet;
 import com.model.Node;
 
 /**
+ * PriorSampling uses the random samples generated to inference the queries.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */
 public class PriorSampling extends InferenceUtil {
 
-	public PriorSampling(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList,
-			List<int[][]> sampleList) {
-		super(alarmNet, evidenceMap, queryList, sampleList);
+	public PriorSampling(BayesNet alarmNet, Map<Node, String> evidenceMap, List<Node> queryList, int[][] sampleArray) {
+		super(alarmNet, evidenceMap, queryList, sampleArray);
 	}
 
+	/**
+	 * infer is used to inference the queries using the samples provided by the
+	 * sampler.
+	 */
 	@Override
 	public void infer() {
 		int b_evidence = -1;
@@ -54,89 +56,94 @@ public class PriorSampling extends InferenceUtil {
 				break;
 			}
 		}
+
+		// Traversing the query list
 		for (Node queryNode : queryList) {
-			for (int[][] sampleArray : sampleList) {
-				int countQueryAndEvidenceSamples = 0;
-				int countEvidenceSamples = 0;
-				int sampleCount = 0;
 
-				for (int[] sample : sampleArray) {
+			int countQueryAndEvidenceSamples = 0;
+			int countEvidenceSamples = 0;
 
-					boolean isEvidenceValid = true;
-					boolean isQueryValid = true;
+			// Traversing the sampleArray
+			for (int[] sample : sampleArray) {
 
-					int b_sample = sample[0];
-					int e_sample = sample[1];
-					int a_sample = sample[2];
-					int j_sample = sample[3];
-					int m_sample = sample[4];
+				boolean isEvidenceValid = true;
+				boolean isQueryValid = true;
 
-					if (b_evidence != -1) {
-						if (!(b_evidence == b_sample)) {
-							isEvidenceValid = false;
-						}
-					}
-					if (e_evidence != -1) {
-						if (!(e_evidence == e_sample)) {
-							isEvidenceValid = false;
-						}
-					}
-					if (a_evidence != -1) {
-						if (!(a_evidence == a_sample)) {
-							isEvidenceValid = false;
-						}
-					}
-					if (j_evidence != -1) {
-						if (!(j_evidence == j_sample)) {
-							isEvidenceValid = false;
-						}
-					}
-					if (m_evidence != -1) {
-						if (!(m_evidence == m_sample)) {
-							isEvidenceValid = false;
-						}
-					}
+				int b_sample = sample[0];
+				int e_sample = sample[1];
+				int a_sample = sample[2];
+				int j_sample = sample[3];
+				int m_sample = sample[4];
 
-					switch (queryNode.getNodeName()) {
-					case "B":
-						if (b_sample != 1)
-							isQueryValid = false;
-						break;
-					case "E":
-						if (e_sample != 1)
-							isQueryValid = false;
-						break;
-					case "A":
-						if (a_sample != 1)
-							isQueryValid = false;
-						break;
-					case "J":
-						if (j_sample != 1)
-							isQueryValid = false;
-						break;
-					case "M":
-						if (m_sample != 1)
-							isQueryValid = false;
-						break;
-
-					default:
-						break;
+				if (b_evidence != -1) {
+					if (!(b_evidence == b_sample)) {
+						isEvidenceValid = false;
 					}
-
-					if (isEvidenceValid) {
-						if (isQueryValid) {
-							countQueryAndEvidenceSamples++;
-						}
-						countEvidenceSamples++;
+				}
+				if (e_evidence != -1) {
+					if (!(e_evidence == e_sample)) {
+						isEvidenceValid = false;
 					}
-					sampleCount++;
+				}
+				if (a_evidence != -1) {
+					if (!(a_evidence == a_sample)) {
+						isEvidenceValid = false;
+					}
+				}
+				if (j_evidence != -1) {
+					if (!(j_evidence == j_sample)) {
+						isEvidenceValid = false;
+					}
+				}
+				if (m_evidence != -1) {
+					if (!(m_evidence == m_sample)) {
+						isEvidenceValid = false;
+					}
 				}
 
-//				System.out.println("REMOVE ME: " + sampleCount + "," + countQueryAndEvidenceSamples
-//						+ "," + countEvidenceSamples);
-				System.out.println(queryNode.getNodeName() + " "
-						+ (countQueryAndEvidenceSamples * 1f / countEvidenceSamples));
+				// Checking if query param is true in samples
+				switch (queryNode.getNodeName()) {
+				case "B":
+					if (b_sample != 1)
+						isQueryValid = false;
+					break;
+				case "E":
+					if (e_sample != 1)
+						isQueryValid = false;
+					break;
+				case "A":
+					if (a_sample != 1)
+						isQueryValid = false;
+					break;
+				case "J":
+					if (j_sample != 1)
+						isQueryValid = false;
+					break;
+				case "M":
+					if (m_sample != 1)
+						isQueryValid = false;
+					break;
+
+				default:
+					break;
+				}
+
+				if (isEvidenceValid) {
+					if (isQueryValid) {
+						// Incrementing when query and evidence is true
+						countQueryAndEvidenceSamples++;
+					}
+					// Counting when evidence is true
+					countEvidenceSamples++;
+				}
 			}
+
+			// System.out.println("REMOVE ME: " + sampleCount + "," +
+			// countQueryAndEvidenceSamples
+			// + "," + countEvidenceSamples);
+			System.out.println(
+					queryNode.getNodeName() + " " + (countQueryAndEvidenceSamples * 1f / countEvidenceSamples));
 		}
+
 	}
 }

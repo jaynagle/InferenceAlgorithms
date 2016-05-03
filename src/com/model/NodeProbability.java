@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.model;
 
 import java.util.HashMap;
@@ -8,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
+ * NodePrability class stores the probabilities in accordance with parents.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */
@@ -19,7 +18,7 @@ public class NodeProbability {
 	private float probability;
 	
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public NodeProbability() {
 		parentEntry = new HashMap<>();
@@ -38,6 +37,7 @@ public class NodeProbability {
 		this.setProbability(probability);
 	}
 	
+	// Debugging function to display all probabilities
 	@Override
 	public String toString() {
 		StringBuilder parentEntryString = new StringBuilder();
