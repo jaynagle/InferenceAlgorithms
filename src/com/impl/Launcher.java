@@ -1,5 +1,5 @@
 /**
- * 
+ * Launcher is the main class that executes all the operations.
  */
 package com.impl;
 
@@ -16,7 +16,7 @@ import com.model.Node;
  * @author Ankit Sadana, Jay Nagle
  *
  */
-public class Inference {
+public class Launcher {
 
 	private static String METHOD;
 	private static int NO_OF_SAMPLES;
@@ -26,7 +26,9 @@ public class Inference {
 	private List<Node> queryList;
 
 	/**
-	 * @param args
+	 * Main method, expects two arguments
+	 * @param args[0] 	Method value, {e,p,r,l}
+	 * @param args[1]	Number of samples to be generated
 	 */
 	public static void main(String[] args) {
 
@@ -36,72 +38,21 @@ public class Inference {
 		System.out.println("Method value: " + METHOD);
 		System.out.println("Number of samples expected: " + NO_OF_SAMPLES);
 
-		Inference inference = new Inference();
+		Launcher launcher = new Launcher();
 
 		// Create the Alarm network as given in book.
-		inference.createAlarmNetwork();
+		launcher.createAlarmNetwork();
 
 		// Store Evidences and Query
-		inference.populateEvidences();
+		launcher.populateEvidences();
 
 		// Do Actual inference now...
-		inference.callInferenceAlgorithms();
-	}
-
-	public void populateEvidences() {
-		Scanner sc = new Scanner(System.in);
-
-		evidenceMap = new HashMap<>();
-		queryList = new ArrayList<>();
-
-		boolean isFirstInput = true;
-		int numEvidences = -1;
-		int numQueries = -1;
-		String[] lineArray;
-		Node foundNode = null;
-
-		System.out.print("\nPlease enter the values for \"N M\": ");
-		while (sc.hasNext()) {
-			lineArray = sc.nextLine().split("\\s");
-
-			if (isFirstInput) {
-				numEvidences = Integer.parseInt(lineArray[0]);
-				numQueries = Integer.parseInt(lineArray[1]);
-				isFirstInput = false;
-
-				// Setting samples to 0 for enumeration inference
-				if (METHOD.equalsIgnoreCase("e"))
-					NO_OF_SAMPLES = 0;
-
-			} else if (numEvidences > 0) {
-				if (!(lineArray[1].equalsIgnoreCase("t") || lineArray[1].equalsIgnoreCase("f"))) {
-					System.out.println("Entry should be \"node t/f\"");
-				}
-				foundNode = alarmNet.getNodeByName(lineArray[0]);
-				if (foundNode != null) {
-					evidenceMap.put(foundNode, lineArray[1]);
-					numEvidences--;
-				}
-
-			} else if (numQueries > 0) {
-				foundNode = alarmNet.getNodeByName(lineArray[0]);
-				if (foundNode != null) {
-					queryList.add(foundNode);
-					numQueries--;
-				}
-			}
-
-			if (numQueries == 0 && numEvidences == 0) {
-				System.out.println("Doing inference");
-				break;
-			}
-		}
-		sc.close();
+		launcher.callInferenceAlgorithms();
 	}
 
 	/**
 	 * This method creates an instance of Bayes Network for the Alarm network
-	 * given in Russel Norvig Book.
+	 * given in Russel Norvig Book and populates it.
 	 */
 	private void createAlarmNetwork() {
 		alarmNet = new BayesNet();
@@ -182,7 +133,68 @@ public class Inference {
 
 		alarmNet.showBayesNet();
 	}
+	
+	/**
+	 * populateEvidences is a function that excepts N, M 
+	 * and then N number of evidences, along with M number of
+	 * queries. 
+ 	 */
+	public void populateEvidences() {
+		Scanner sc = new Scanner(System.in);
 
+		evidenceMap = new HashMap<>();
+		queryList = new ArrayList<>();
+
+		boolean isFirstInput = true;
+		int numEvidences = -1;
+		int numQueries = -1;
+		String[] lineArray;
+		Node foundNode = null;
+
+		System.out.print("\nPlease enter the values for \"N M\": ");
+		while (sc.hasNext()) {
+			lineArray = sc.nextLine().split("\\s");
+
+			if (isFirstInput) {
+				numEvidences = Integer.parseInt(lineArray[0]);
+				numQueries = Integer.parseInt(lineArray[1]);
+				isFirstInput = false;
+
+				// Setting samples to 0 for enumeration inference
+				if (METHOD.equalsIgnoreCase("e"))
+					NO_OF_SAMPLES = 0;
+
+			} else if (numEvidences > 0) {
+				if (!(lineArray[1].equalsIgnoreCase("t") || lineArray[1].equalsIgnoreCase("f"))) {
+					System.out.println("Entry should be \"node t/f\"");
+				}
+				foundNode = alarmNet.getNodeByName(lineArray[0]);
+				if (foundNode != null) {
+					evidenceMap.put(foundNode, lineArray[1]);
+					numEvidences--;
+				}
+
+			} else if (numQueries > 0) {
+				foundNode = alarmNet.getNodeByName(lineArray[0]);
+				if (foundNode != null) {
+					queryList.add(foundNode);
+					numQueries--;
+				}
+			}
+
+			if (numQueries == 0 && numEvidences == 0) {
+				System.out.println("Doing inference");
+				break;
+			}
+		}
+		sc.close();
+	}
+
+	/**
+	 * callInferenceAlgorithms is a function that calls the 
+	 * appropriate inference algorithm according to the method
+	 * passed as the argument.
+	 */
 	private void callInferenceAlgorithms() {
 		
 		List<int[][]> sampleList = new Sampler().getSamples(alarmNet);
@@ -190,13 +202,13 @@ public class Inference {
 		
 		switch (METHOD) {
 		case "p":
-			PriorSampling priorSampling = new PriorSampling(alarmNet, evidenceMap, queryList, sampleList);
-			priorSampling.infer();
+			new PriorSampling(alarmNet, evidenceMap, queryList, sampleList).infer();
 			break;
 		case "r":
 			new RejectionSampling(alarmNet, evidenceMap, queryList, sampleList).infer();
 			break;
 		case "l":
+			
 			break;
 		case "e":
 			new EnumerationInference(alarmNet, evidenceMap, queryList).infer();
