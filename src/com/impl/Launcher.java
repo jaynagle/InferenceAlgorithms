@@ -209,7 +209,7 @@ public class Launcher {
 					new Sampler().generateWeightedSamples(alarmNet, evidenceMap, sampleArray)).infer();
 			break;
 		case "e":
-			new EnumerationInference(alarmNet, evidenceMap, queryList).infer();
+			new EnumerationInference(alarmNet, evidenceMap, queryList).enumerateAsk();
 			break;
 		default:
 			break;
