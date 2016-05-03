@@ -8,11 +8,23 @@ import com.model.BayesNet;
 import com.model.NodeProbability;
 
 /**
+ * Sampler class takes a bayes net, and generates random samples to populate
+ * the sampleArray.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */
 public class Sampler {
 
+	/**
+	 * generateSample is a function that generates samples to 
+	 * populate the passed int array for the passed BayesNet.
+	 * 
+	 * @param bayesNet
+	 * @param sampleArray
+	 * 
+	 * @return
+	 */
 	private int[][] generateSample(BayesNet bayesNet, int[][] sampleArray) {
 
 		Random a_random = new Random();
@@ -87,11 +99,6 @@ public class Sampler {
 			sampleArray[i] = new int[] { b_sample, e_sample, a_sample, j_sample, m_sample };
 		}
 
-		/*
-		 * System.out.println("b,e,a,j,m"); for (int[] ks : sampleArray) { for
-		 * (int k : ks) { System.out.print(k + ","); } System.out.println(""); }
-		 */
-
 		return sampleArray;
 	}
 
@@ -110,6 +117,20 @@ public class Sampler {
 			sampleList.add(generateSample(bayesNet, new int[i][5]));
 		}
 		return sampleList;
+	}
+	
+	/**
+	 * This method creates samples based on the given size
+	 * 
+	 * @param bayesNet			Bayes Net created in Launcher
+	 * @param numberOfSamples	Number of samples passed as an argument by the user
+	 * 
+	 * @return Sample array
+	 */
+	public int[][] getSamples(BayesNet bayesNet, int numberOfSamples) {
+		int[][] samples = generateSample(bayesNet, new int[numberOfSamples][5]);
+		
+		return samples;
 	}
 
 }
