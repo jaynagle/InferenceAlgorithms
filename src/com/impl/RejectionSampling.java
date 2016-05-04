@@ -2,8 +2,6 @@ package com.impl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import com.model.BayesNet;
 import com.model.Node;
 

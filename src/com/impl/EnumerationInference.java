@@ -1,17 +1,16 @@
-/**
- * 
- */
 package com.impl;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.model.BayesNet;
 import com.model.Node;
 import com.model.NodeProbability;
 
 /**
+ * EnumerationInference uses the BayesNet and evidence map to
+ * infer the exact probability for the queryList.
+ * 
  * @author Ankit Sadana, Jay Nagle
  *
  */

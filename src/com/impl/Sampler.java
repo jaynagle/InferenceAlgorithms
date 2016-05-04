@@ -1,8 +1,6 @@
 package com.impl;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -223,13 +221,13 @@ public class Sampler {
 
 			if (b_evidence != -1 && b_sample != b_evidence)
 				continue;
-			if (e_evidence != -1 && e_sample != b_evidence)
+			if (e_evidence != -1 && e_sample != e_evidence)
 				continue;
-			if (a_evidence != -1 && a_sample != b_evidence)
+			if (a_evidence != -1 && a_sample != a_evidence)
 				continue;
-			if (j_evidence != -1 && j_sample != b_evidence)
+			if (j_evidence != -1 && j_sample != j_evidence)
 				continue;
-			if (m_evidence != -1 && m_sample != b_evidence)
+			if (m_evidence != -1 && m_sample != m_evidence)
 				continue;
 
 			//sampleArray[i] = new int[] { b_sample, e_sample, a_sample, j_sample, m_sample };
@@ -348,17 +346,5 @@ public class Sampler {
 		result.add(totalSampleWeight);
 
 		return result;
-	}
-	
-	public static void main(String[] args) {
-		Sampler sampler = new Sampler();
-		sampler.abc("jay");
-	}
-	
-	public String abc(String name) {
-		
-		name = name + "A";
-		name = name + abc(name);
-		return name;
 	}
 }
