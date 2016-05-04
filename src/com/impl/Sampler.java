@@ -242,6 +242,15 @@ public class Sampler {
 		return sampledArray;
 	}
 
+	/**
+	 * This method generates weighted samples for the given bayes net according
+	 * to the evidences provided.
+	 * 
+	 * @param bayesNet
+	 * @param evidenceMap
+	 * @param sampleArray
+	 * @return
+	 */
 	public List<Object> generateWeightedSamples(BayesNet bayesNet, Map<Node, String> evidenceMap, int[][] sampleArray) {
 
 		//result list to store return values SampleArray, WeightArray and total weight.

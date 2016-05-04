@@ -26,6 +26,10 @@ public class EnumerationInference {
 		this.querList = queryList;
 	}
 	
+	/**
+	 * This method computes the probability of every query variable using
+	 * enumeration.
+	 */
 	public void enumerateAsk() {
 		
 		for (Node node : querList) {
@@ -39,6 +43,14 @@ public class EnumerationInference {
 	}
 
 
+	/**
+	 * This method creates enumerations for all the variables of provided
+	 * Bayesian network.
+	 * 
+	 * @param remainingNodes
+	 * @param givenEvidence
+	 * @return
+	 */
 	public float enumerateAll(List<Node> remainingNodes, HashMap<Node, String> givenEvidence) {
 		if (remainingNodes.isEmpty()) return 1f;
 		
