@@ -124,9 +124,9 @@ public class Launcher {
 		m.addNodeProbability(entry, 0.01f);
 
 		// System.out.println("Creating Bayes net");
-		alarmNet.addNode(a);
 		alarmNet.addNode(b);
 		alarmNet.addNode(e);
+		alarmNet.addNode(a);
 		alarmNet.addNode(j);
 		alarmNet.addNode(m);
 

@@ -28,10 +28,13 @@ public class EnumerationInference {
 	}
 	
 	public void enumerateAsk() {
-		List<Node> bayesNodes = alarmNet.getNodes();
+		
 		for (Node node : querList) {
-			evidenceMap.put(node, "t");
-			float probability = enumerateAll(bayesNodes, evidenceMap);
+			List<Node> bayesNodes = alarmNet.getNodes();
+			HashMap<Node, String> tmpEvidenceMap = new HashMap<>();
+			tmpEvidenceMap.putAll(evidenceMap);
+			tmpEvidenceMap.put(node, "t");
+			float probability = enumerateAll(bayesNodes, tmpEvidenceMap);
 			System.out.println(node.getNodeName() + " " + probability);
 		}
 	}
@@ -60,7 +63,7 @@ public class EnumerationInference {
 			falseMap.put(node, "f");
 			
 			return (node.getProbability(nodeProbability) * enumerateAll(remainingNodes, trueMap)) 
-					+ (node.getProbability(nodeProbability) * enumerateAll(remainingNodes, falseMap));
+					+ ((1f - node.getProbability(nodeProbability)) * enumerateAll(remainingNodes, falseMap));
 		}
 	}
 }
