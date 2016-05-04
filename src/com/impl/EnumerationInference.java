@@ -1,5 +1,6 @@
 package com.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,12 +34,20 @@ public class EnumerationInference {
 	public void enumerateAsk() {
 		
 		for (Node node : querList) {
-			List<Node> bayesNodes = alarmNet.getNodes();
+			List<Node> bayesNodes = new ArrayList<>(alarmNet.getNodes());			
 			HashMap<Node, String> tmpEvidenceMap = new HashMap<>();
 			tmpEvidenceMap.putAll(evidenceMap);
 			tmpEvidenceMap.put(node, "t");
-			float probability = enumerateAll(bayesNodes, tmpEvidenceMap);
-			System.out.println(node.getNodeName() + " " + probability);
+			float probability_true = enumerateAll(bayesNodes, tmpEvidenceMap);
+			
+			bayesNodes = new ArrayList<>(alarmNet.getNodes());
+			tmpEvidenceMap = new HashMap<>();
+			tmpEvidenceMap.putAll(evidenceMap);
+			tmpEvidenceMap.put(node, "f");
+			float probability_false = enumerateAll(bayesNodes, tmpEvidenceMap);
+			
+			float normalized_prob = (probability_true * probability_false)/(probability_true + probability_false);
+			System.out.println(node.getNodeName() + " " + normalized_prob * probability_true);
 		}
 	}
 
